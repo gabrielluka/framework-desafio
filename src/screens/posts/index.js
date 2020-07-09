@@ -6,7 +6,7 @@ import {CardShadow} from '../../components/card';
 import {Container, Title, TextBody} from './style';
 import {FlatList, View} from 'react-native';
 
-const CardPosts = (item) => {
+const CardPosts = ({item}) => {
   return (
     <CardShadow>
       <Title>{item.title}</Title>
@@ -30,9 +30,10 @@ const Posts = () => {
     <Container>
       {posts.length > 0 ? (
         <FlatList
+          initialNumToRender={15}
           keyExtractor={(item) => item.id.toString()}
           data={posts}
-          renderItem={({item}) => CardPosts(item)}
+          renderItem={CardPosts}
         />
       ) : (
         <View />

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {TodosService} from '../../service/TodoService';
 import {CardShadow} from '../../components/card';
 import {FlatList, View} from 'react-native';
+import {Loader} from '../../components/loader';
 
 import {
   Container,
@@ -12,7 +13,7 @@ import {
   TitleStatus,
 } from './style';
 
-const cardTasks = (item) => {
+const cardTasks = ({item}) => {
   return (
     <CardShadow>
       <Title>{item.title}</Title>
@@ -21,11 +22,30 @@ const cardTasks = (item) => {
   );
 };
 
+const RenderList = ({todos}) => {
+  return (
+    <View>
+      {todos.length > 0 ? (
+        <FlatList
+          data={todos}
+          initialNumToRender={15}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={cardTasks}
+        />
+      ) : (
+        <View />
+      )}
+    </View>
+  );
+};
+
 const Todos = () => {
   const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [isDoneTasks, setIsDoneStasks] = useState(false);
 
   const filterTodo = async () => {
+    setLoading(true);
     setIsDoneStasks(!isDoneTasks);
   };
 
@@ -39,6 +59,9 @@ const Todos = () => {
     };
 
     changeList();
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   }, [isDoneTasks]);
 
   useEffect(() => {
@@ -64,15 +87,7 @@ const Todos = () => {
         <TitleStatus>Done</TitleStatus>
       </Row>
 
-      {todos.length > 0 ? (
-        <FlatList
-          keyExtractor={(item) => item.id.toString()}
-          data={todos}
-          renderItem={({item}) => cardTasks(item)}
-        />
-      ) : (
-        <View />
-      )}
+      {!loading ? <RenderList todos={todos} /> : <Loader />}
     </Container>
   );
 };

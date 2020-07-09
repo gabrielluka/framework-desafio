@@ -5,7 +5,7 @@ import {FlatList, View} from 'react-native';
 import {CardShadow} from '../../components/card';
 import {Container, Text} from './style';
 
-const Card = (item) => {
+const CardAlbum = ({item}) => {
   return (
     <CardShadow>
       <Text>{item.title}</Text>
@@ -29,9 +29,10 @@ const Album = () => {
     <Container>
       {albums.length > 0 ? (
         <FlatList
+          initialNumToRender={15}
           keyExtractor={(item) => item.id.toString()}
           data={albums}
-          renderItem={({item}) => Card(item)}
+          renderItem={CardAlbum}
         />
       ) : (
         <View />
