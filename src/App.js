@@ -13,12 +13,11 @@ const handlerSyncView = (isDoneSync) => {
 
 const App = () => {
   const [isDoneSync, setDoneSync] = useState(false);
-  const [isError, setError] = useState(false);
 
   useEffect(() => {
     let didCancel = false;
 
-    const isOk = (value) => (value ? setDoneSync(value) : setError(value));
+    const isOk = (value) => setDoneSync(value);
 
     if (!didCancel) {
       initSync(isOk);
